@@ -16,12 +16,14 @@
         }
 
         #legend {
-            float: left;
-            margin-left: 20px;
-            padding: 10px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
             background-color: white;
+            padding: 10px;
+            border-radius: 5px;
             border: 1px solid #ccc;
-            width: 200px;
+            width: auto;
         }
 
         #legend h4 {
@@ -104,11 +106,25 @@
         ];
 
         L.polygon(spittelbergCoords, {
-            color: 'darkgrey',
+            color: 'black',  // Almost black outline
             fillColor: 'lightgrey',
             fillOpacity: 0.7,
             dashArray: '5, 5'
         }).addTo(map).bindPopup("Spittelberg");
+
+        // Measure distance between two markers (example: between St. Stephen's Cathedral and Kunsthistorisches Museum)
+        var marker1 = L.marker([48.2086, 16.3731]).addTo(map);
+        var marker2 = L.marker([48.2046, 16.3616]).addTo(map);
+
+        var distance = marker1.getLatLng().distanceTo(marker2.getLatLng()).toFixed(2);  // Distance in meters
+        L.polyline([marker1.getLatLng(), marker2.getLatLng()], {color: 'blue'}).addTo(map);
+        
+        var distanceLabel = "Distance: " + distance + " meters";
+        var distancePopup = L.popup()
+            .setLatLng([48.206, 16.367])
+            .setContent(distanceLabel)
+            .openOn(map);
+        
     </script>
 </body>
 </html>
