@@ -54,9 +54,12 @@
     <script>
         var map = L.map('map').setView([48.2082, 16.3738], 13);
 
+        // Tile layer URL with proper fallback in case OpenStreetMap is down
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+        }).addTo(map).on('tileerror', function () {
+            alert("Map tiles couldn't be loaded. Please try again later.");
+        });
 
         var locations = [
             { name: "Weltmuseum", lat: 48.2056, lng: 16.3664, url: "https://www.google.com/maps?q=48.2056,16.3664", price: "€16", color: "🔴" },
@@ -88,4 +91,24 @@
                 marker.closePopup();
             });
 
-            marker.on('click', function
+            marker.on('click', function() {
+                window.open(location.url, '_blank');
+            });
+        });
+
+        var spittelbergCoords = [
+            [48.2040, 16.3540],
+            [48.2060, 16.3545],
+            [48.2065, 16.3590],
+            [48.2045, 16.3595]
+        ];
+
+        L.polygon(spittelbergCoords, {
+            color: 'darkgrey',
+            fillColor: 'lightgrey',
+            fillOpacity: 0.7,
+            dashArray: '5, 5'
+        }).addTo(map).bindPopup("Spittelberg");
+    </script>
+</body>
+</html>
