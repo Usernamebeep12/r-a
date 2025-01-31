@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Map of Vienna</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 600px;
+            width: 75%;
+            float: left;
+        }
+
+        .custom-icon {
+            font-size: 16px;
+        }
+
+        #legend {
+            float: left;
+            margin-left: 20px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+
+        #legend h4 {
+            margin-top: 0;
+        }
+
+        #legend div {
+            display: flex;
+            align-items: center;
+        }
+
+        #legend span {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Interactive Map of Vienna</h2>
+    <div id="map"></div>
+    <div id="legend">
+        <h4>Legend:</h4>
+        <div><span style="background-color: red;"></span> Museums</div>
+        <div><span style="background-color: green;"></span> Palaces & Churches</div>
+        <div><span style="background-color: black;"></span> Market</div>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([48.2082, 16.3738], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var locations = [
+            { name: "Weltmuseum", lat: 48.2056, lng: 16.3664, url: "https://www.google.com/maps?q=48.2056,16.3664", price: "€16", color: "🔴" },
+            { name: "Kunsthistorisches Museum", lat: 48.2046, lng: 16.3616, url: "https://www.google.com/maps?q=48.2046,16.3616", price: "€21", color: "🔴" },
+            { name: "Musea van Militaire Geschiedenis", lat: 48.1858, lng: 16.3866, url: "https://www.google.com/maps?q=48.1858,16.3866", price: "€7", color: "🔴" },
+            { name: "Naschmarkt", lat: 48.1986, lng: 16.3610, url: "https://www.google.com/maps?q=48.1986,16.3610", price: "Free", color: "⚫" },
+            { name: "Schönbrunn Palace", lat: 48.1842, lng: 16.3122, url: "https://www.google.com/maps?q=48.1842,16.3122", price: "€22", color: "🟢" },
+            { name: "Belvedere Palace", lat: 48.1912, lng: 16.3807, url: "https://www.google.com/maps?q=48.1912,16.3807", price: "€16", color: "🟢" },
+            { name: "Hofburg Palace", lat: 48.2064, lng: 16.3652, url: "https://www.google.com/maps?q=48.2064,16.3652", price: "€15", color: "🟢" },
+            { name: "St. Stephen's Cathedral", lat: 48.2086, lng: 16.3731, url: "https://www.google.com/maps?q=48.2086,16.3731", price: "Free", color: "🟩" },
+            { name: "Karlskirche", lat: 48.1983, lng: 16.3725, url: "https://www.google.com/maps?q=48.1983,16.3725", price: "€8", color: "🟩" },
+            { name: "Peterskirche", lat: 48.2094, lng: 16.3711, url: "https://www.google.com/maps?q=48.2094,16.3711", price: "Free", color: "🟩" },
+            { name: "Votive Church", lat: 48.2140, lng: 16.3606, url: "https://www.google.com/maps?q=48.2140,16.3606", price: "Free", color: "🟩" },
+            { name: "St. Charles Church", lat: 48.1986, lng: 16.3721, url: "https://www.google.com/maps?q=48.1986,16.3721", price: "€8", color: "🟩" },
+            { name: "Augustinian Church", lat: 48.2068, lng: 16.3665, url: "https://www.google.com/maps?q=48.2068,16.3665", price: "Free", color: "🟩" },
+            { name: "Capuchin Church", lat: 48.2062, lng: 16.3702, url: "https://www.google.com/maps?q=48.2062,16.3702", price: "€8", color: "🟩" }
+        ];
+
+        locations.forEach(function(location) {
+            var marker = L.marker([location.lat, location.lng], {icon: L.divIcon({className: 'custom-icon', html: location.color, iconSize: [16, 16]})}).addTo(map);
+
+            marker.bindPopup('<h3>' + location.name + '</h3><p>Entrance Fee: ' + location.price + '</p>');
+
+            marker.on('mouseover', function() {
+                marker.bindPopup('<h3>' + location.name + '</h3><p>Entrance Fee: ' + location.price + '</p>').openPopup();
+            });
+
+            marker.on('mouseout', function() {
+                marker.closePopup();
+            });
+
+            marker.on('click', function
